@@ -43,7 +43,7 @@ function SignInForm() {
             />
             <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
             <button className="modal__button modal-window-welcome__btn ui">Sign in</button>
-            <span>Don't have an account? <Link href="/sign-up">Sign up</Link></span>
+            <span>Don&apos;t have an account? <Link href="/sign-up">Sign up</Link></span>
         </form>
     )
 }

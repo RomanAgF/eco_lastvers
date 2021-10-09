@@ -29,7 +29,7 @@ export default function Lifelines() {
                     </div>
 
                     <button className="music" onClick={()=> alert("NOT READY")}>
-                        <Image src="/img/mute.png" width="40" alt="sound"/>
+                        <Image src="/img/mute.png" width={40} height={40} alt="sound"/>
                     </button>
                 </div>
             </div>

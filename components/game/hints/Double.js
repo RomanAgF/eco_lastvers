@@ -1,11 +1,7 @@
 import gameStore from "../../../store/gameStore";
-import axios from "axios";
+import axios from "../../../helpers/frontendAxios";
 import {observer} from "mobx-react-lite";
 
-const STYLES = {
-    default: ["millionaire-hints__item", "millionaire-hints__hint", "millionaire-hints__hint-double"],
-    disabled: ["millionaire-hints__item", "millionaire-hints__hint", "millionaire-hints__hint-double", "millionaire-hints__hint_disabled"]
-}
 
 function Double() {
     function useHint() {
@@ -14,11 +10,14 @@ function Double() {
             .then(response => gameStore.setHints(response.data))
     }
 
-    const isHintEnable = !gameStore.hints.double.used;
+    const hintIsEnabled = !gameStore.hints.double.used;
+
+    const disabled = "millionaire-hints__hint_disabled";
+    const className = "millionaire-hints__item millionaire-hints__hint millionaire-hints__hint-double ";
 
     return (
         <div
-            className={isHintEnable ? STYLES.default.join(' ') : STYLES.disabled.join(' ')}
+            className={className + (hintIsEnabled ? "" : disabled)}
             data-bs-toggle="tooltip"
             data-bs-placement="top"
             title="Second chance"

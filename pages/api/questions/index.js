@@ -24,7 +24,12 @@ async function handler(req, res) {
 
     const gameSession = await findGameSession(user.login);
 
-    if ((gameSession.status !== gameStatuses.GAMESTARTED) || (!isGameStarted())) {
+    if (!isGameStarted()){
+        res.status(200).json({message: "GAME_NOT_STARTED"});
+        return;
+    }
+
+    if ((gameSession.status !== gameStatuses.GAMESTARTED)) {
         res.status(200).json({message: "GAME_OVER"});
         return;
     }

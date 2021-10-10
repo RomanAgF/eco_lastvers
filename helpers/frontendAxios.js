@@ -4,6 +4,11 @@ function onSuccess(res){
     switch (res.data?.message) {
         case "GAME_OVER":
             document.location = "/results";
+            res.data = undefined;
+            break;
+        case "GAME_NOT_STARTED":
+            document.location = "/waiting";
+            res.data = undefined;
             break;
     }
     return res;

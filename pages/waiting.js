@@ -2,13 +2,22 @@ import {withIronSession} from "next-iron-session";
 import ensureLoggedIn from "../helpers/ensureLoggedIn";
 import getConfig from "next/config";
 import {useEffect, useRef} from "react";
-import {findGameSession} from "../services/gameSessionService";
+import isGameStarted from "../helpers/isGameStarted";
+import {DateTime} from "luxon";
 
 const {serverRuntimeConfig} = getConfig()
 
-export default function Results(props) {
+export default function Waiting(props) {
     const modalRef = useRef();
     const modalWindowRef = useRef();
+
+    const date = DateTime.fromISO(props.startTime, {locale: "en"});
+    const {weekday, weekdayLong} = date;
+
+    const isToday = DateTime.local({locale: "en"}).weekday === weekday;
+
+    const day = isToday ? "today" : `in the next ${weekdayLong}`;
+    const time = date.toFormat("hh:mm a");
 
     useEffect(() => {
         const modal = modalRef.current;
@@ -19,22 +28,23 @@ export default function Results(props) {
     }, [])
 
     return <div className="modal-overlay modal-overlay_fill-bg" ref={modalRef}>
-        <div className="modal-window modal-window-welcome ui" ref={modalWindowRef}>
-            <h1>Ну всё, {props.progress} из 10</h1>
+        <div className="modal-window ui" ref={modalWindowRef}>
+            <h1>The game will be start {day} <br/> at {time} in your time zone</h1>
         </div>
     </div>
 }
 
 export const getServerSideProps = withIronSession(
-    ensureLoggedIn(async ({req}) => {
-        const user = req.session.get('user');
-        const gameSession = await findGameSession(user.login);
-
-        if (gameSession.status === 0) {
+    ensureLoggedIn(() => {
+        if (isGameStarted()) {
             return {redirect: {destination: '/game', permanent: false}};
         }
 
-        return {props: {progress: gameSession.progress},}
+        const {hour, minute, weekday} = serverRuntimeConfig.GAME_START_TIME;
+
+        const startTime = DateTime.fromObject({hour, minute, weekday}, {zone: "Europe/Moscow"}).toISO();
+
+        return {props: {startTime}};
     }, '/'),
     serverRuntimeConfig.ironSessionConfig
 )

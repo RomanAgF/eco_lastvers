@@ -33,8 +33,11 @@ function Answer(props) {
 
         setTimeout(() => {
             console.log("Here")
-            axios.get('/api/questions')
-                .then(questionResponse => gameStore.updateQuestion(questionResponse.data))
+            axios.get('/api/questions').then(questionResponse => {
+                if (questionResponse.data) {
+                    gameStore.updateQuestion(questionResponse.data)
+                }
+            })
             setStyles(STYLES.default);
         }, 2 * 1000)
     }

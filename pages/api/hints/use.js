@@ -18,6 +18,7 @@ async function handler(req, res) {
         return;
     }
 
+    // check that hint with that name is exists
     if (!["double", "shield", "half"].includes(req.body?.hint)) {
         res.status(400).json({message: "Hint is missing or incorrect"});
     }
@@ -51,6 +52,7 @@ async function handler(req, res) {
         return;
     }
 
+    // if hint wasn't used then activate
     await activateHint(user.login, req.body.hint);
     const {double, shield, half} = await findGameSession(user.login);
     res.status(200).json({

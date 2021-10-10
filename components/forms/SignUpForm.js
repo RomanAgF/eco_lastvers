@@ -17,10 +17,15 @@ function SignUpForm() {
         const password1 = passwordInputRef1.current.value;
         const password2 = passwordInputRef2.current.value;
 
-        const response = await axios.post('/api/auth/sign-up', {login, password1, password2});
-
-        if (response.status === 200) {
-            await router.push('/game');
+        try {
+            const response = await axios.post('/api/auth/sign-up', {login, password1, password2});
+            if (response.status === 200) {
+                await router.push('/game');
+            }
+        } catch (e) {
+            if (e.response.data?.message) {
+                alert(e.response.data.message);
+            }
         }
     }
 

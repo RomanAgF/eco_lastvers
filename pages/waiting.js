@@ -29,7 +29,7 @@ export default function Waiting(props) {
 
     return <div className="modal-overlay modal-overlay_fill-bg" ref={modalRef}>
         <div className="modal-window ui" ref={modalWindowRef}>
-            <h1>The game will be start {day} <br/> at {time} in your time zone</h1>
+            <h1>The game will be started {day} <br/> at {time} in your time zone</h1>
         </div>
     </div>
 }

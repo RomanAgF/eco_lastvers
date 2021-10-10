@@ -26,7 +26,7 @@ async function handler(req, res) {
     const user = await prisma.user.findUnique({where: {username: login}})
 
     if (!user) {
-        res.status(403).json({message: "User doesnt' exist"});
+        res.status(403).json({message: "User doesn't exist"});
         return;
     }
 
@@ -40,7 +40,7 @@ async function handler(req, res) {
         await req.session.save();
         res.status(200).send();
     } else {
-        res.status(403).send();
+        res.status(403).json({message: "login or password is missing or incorrect"});
     }
 }
 

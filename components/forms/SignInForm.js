@@ -15,10 +15,15 @@ function SignInForm() {
         const login = loginInputRef.current.value;
         const password = passwordInputRef.current.value;
 
-        const response = await axios.post('/api/auth/sign-in', {login, password});
-
-        if (response.status === 200) {
-            await router.push('/game');
+        try {
+            const response = await axios.post('/api/auth/sign-in', {login, password});
+            if (response.status === 200) {
+                await router.push('/game');
+            }
+        } catch (e) {
+            if (e.response.data?.message) {
+                alert(e.response.data.message);
+            }
         }
     }
 

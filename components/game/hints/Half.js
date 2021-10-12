@@ -5,9 +5,13 @@ import {observer} from "mobx-react-lite";
 
 function Half() {
     function useHint() {
-        axios
-            .post('/api/hints/use', {hint: 'half'})
-            .then(response => gameStore.setHints(response.data))
+        axios.post('/api/hints/use', {hint: 'half'}).then(() => {
+            axios.get('/api/questions').then(questionResponse => {
+                if (questionResponse.data) {
+                    gameStore.updateQuestion(questionResponse.data)
+                }
+            })
+        });
     }
 
     const hintIsEnabled = !gameStore.hints.half.used;

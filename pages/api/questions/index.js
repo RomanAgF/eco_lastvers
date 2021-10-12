@@ -1,10 +1,10 @@
 import {withIronSession} from "next-iron-session";
 import getConfig from "next/config";
-import prisma from "../../../context/prisma";
 import unzipHint from "../../../helpers/unzipHint";
 import questions from "../../../questionsData";
 import isGameStarted from "../../../helpers/isGameStarted";
 import {findGameSession, setGameSessionStatus} from "../../../services/gameSessionService";
+import randomIntFromIntervalAndSeed from "../../../helpers/randomIntFromIntervalAndSeed";
 
 const {serverRuntimeConfig} = getConfig()
 
@@ -24,7 +24,7 @@ async function handler(req, res) {
 
     const gameSession = await findGameSession(user.login);
 
-    if (!isGameStarted()){
+    if (!isGameStarted()) {
         res.status(200).json({message: "GAME_NOT_STARTED"});
         return;
     }
@@ -40,11 +40,37 @@ async function handler(req, res) {
         return;
     }
 
+    // copy objects
+    const answers = questions[gameSession.progress].answers.map(el => ({...el}));
+
+    if (gameSession.half === 3) {
+        // hide every button, that is not correct answer
+        answers.forEach(el => el.hidden = !el.accept);
+
+        // get random index of the answer that shouldn't be hidden
+        const seed = gameSession.progress;
+        const notHidden = randomIntFromIntervalAndSeed(0, 3, seed);
+
+        // if that index is the correct answer then hide first or next answer
+        if (!answers[notHidden].accept) {
+            answers[notHidden].hidden = false;
+        } else if (notHidden === 3) {
+            answers[0].hidden = false;
+        } else {
+            answers[notHidden + 1].hidden = false;
+        }
+    }
+
+    // delete information about correct answers and add ID
+    answers.forEach((el, index) => {
+        el.id = index;
+        el.accept = undefined;
+    });
+
+
     const questionData = {
         name: questions[gameSession.progress].question,
-        answers: questions[gameSession.progress].answers.map((el, index) =>
-            ({id: index, text: el.text})
-        ),
+        answers
     }
 
     const responseData = {

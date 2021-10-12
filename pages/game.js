@@ -34,7 +34,7 @@ function Game() {
                 </div>
                 <div className="millionaire-ui-answers">
                     {gameStore?.question?.answers.map(el =>
-                        <Answer key={el.id} id={el.id} text={el.text}/>
+                        <Answer key={el.id} id={el.id} text={el.text} hidden={el.hidden}/>
                     )}
                 </div>
             </div>

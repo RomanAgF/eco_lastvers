@@ -23,6 +23,13 @@ async function handler(req, res) {
         return
     }
 
+    if (!login.match(/^.{3,32}#[0-9]{4}$/i)){
+        res.status(400).json({
+            message: "The username should be your discord username with tag after it, e.g. Qwerty#1234"
+        })
+        return
+    }
+
     if (password1 !== password2) {
         res.status(400).json({
             message: "passwords doesn't match"

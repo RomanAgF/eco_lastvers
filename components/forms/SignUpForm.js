@@ -13,9 +13,9 @@ function SignUpForm() {
     async function submit(event) {
         event.preventDefault();
 
-        const login = loginInputRef.current.value;
-        const password1 = passwordInputRef1.current.value;
-        const password2 = passwordInputRef2.current.value;
+        const login = loginInputRef.current.value.trim();
+        const password1 = passwordInputRef1.current.value.trim();
+        const password2 = passwordInputRef2.current.value.trim();
 
         try {
             const response = await axios.post('/api/auth/sign-up', {login, password1, password2});

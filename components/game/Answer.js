@@ -8,13 +8,23 @@ const STYLES = {
     picked: ['millionaire-ui-answers__item', 'ui', 'millionaire-ui-answers__item_picked'],
     correct: ['millionaire-ui-answers__item', 'ui', 'millionaire-ui-answers__item_accept'],
     incorrect: ['millionaire-ui-answers__item', 'ui', 'millionaire-ui-answers__item_fail'],
+    hidden: ['millionaire-ui-answers__item', 'ui', 'millionaire-ui-answers__item_lock'],
 }
 
 function Answer(props) {
-    const [styles, setStyles] = useState(STYLES.default);
+    const [styles, setStyles] = useState(props.hidden ? STYLES.hidden : STYLES.default);
+
+    if (props.hidden && (styles !== STYLES.hidden)){
+        setStyles(STYLES.hidden);
+    }
+
+    if (!props.hidden && (styles === STYLES.hidden)){
+        setStyles(STYLES.default);
+    }
 
     async function submit() {
         if (!gameStore.isButtonsEnabled) return;
+        if (props.hidden) return;
 
         setStyles(STYLES.picked)
 

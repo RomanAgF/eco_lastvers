@@ -12,8 +12,8 @@ function SignInForm() {
     async function submit(event) {
         event.preventDefault();
 
-        const login = loginInputRef.current.value;
-        const password = passwordInputRef.current.value;
+        const login = loginInputRef.current.value.trim();
+        const password = passwordInputRef.current.value.trim();
 
         try {
             const response = await axios.post('/api/auth/sign-in', {login, password});

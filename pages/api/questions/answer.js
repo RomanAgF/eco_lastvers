@@ -52,9 +52,11 @@ async function handler(req, res) {
     // deactivate hints
     if (shieldActivated) {
         await deactivateHint(user.login, "shield");
-    } else if (doubleActivated) {
+    }
+    if (doubleActivated) {
         await deactivateHint(user.login, "double");
-    } else if (halfActivated) {
+    }
+    if (halfActivated) {
         await deactivateHint(user.login, "half");
     }
 

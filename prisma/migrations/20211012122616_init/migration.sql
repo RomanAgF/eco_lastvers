@@ -11,7 +11,8 @@ CREATE TABLE "GameSession" (
     "double" INTEGER NOT NULL DEFAULT 0,
     "shield" INTEGER NOT NULL DEFAULT 0,
     "half" INTEGER NOT NULL DEFAULT 0,
-    "status" INTEGER NOT NULL DEFAULT 0
+    "status" INTEGER NOT NULL DEFAULT 0,
+    "endTime" DATETIME NOT NULL
 );
 
 -- CreateIndex

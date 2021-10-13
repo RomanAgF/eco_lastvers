@@ -19,4 +19,5 @@ model GameSession {
   shield Int @default(0)
   half Int @default(0)
   status Int @default(0)
+  endTime DateTime
 }

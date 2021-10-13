@@ -5,6 +5,7 @@ import Head from "next/head";
 function MyApp({Component, pageProps}) {
     return <>
         <Head>
+            <title>Who wants to be a Millionaire?</title>
             <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet"/>
             <link
                 href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"

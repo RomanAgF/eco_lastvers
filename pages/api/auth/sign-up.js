@@ -14,7 +14,6 @@ async function handler(req, res) {
 
     const {login, password1, password2} = req.body;
 
-    // TODO: login validator
 
     if (!login || !password1 || !password2) {
         res.status(400).json({
@@ -44,11 +43,6 @@ async function handler(req, res) {
                 password: hashPassword(password1)
             }
         })
-
-        const gameSession = await findGameSession(login);
-        if (!gameSession) {
-            await createGameSession(login);
-        }
 
         req.session.set("user", {login});
         await req.session.save();

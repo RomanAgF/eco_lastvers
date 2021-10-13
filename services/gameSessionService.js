@@ -1,4 +1,5 @@
 import prisma from "../context/prisma";
+import {DateTime} from "luxon"
 
 export async function incrementProgress(username) {
     const gameSession = await findGameSession(username);
@@ -16,10 +17,6 @@ export async function setGameSessionStatus(username, status) {
     await prisma.gameSession.update({where: {username}, data: {status}})
 }
 
-export async function createGameSession(username) {
-    await prisma.gameSession.create({data: {username}})
-}
-
 export async function activateHint(username, hint) {
     await prisma.gameSession.update({
         where: {username},
@@ -32,4 +29,19 @@ export async function deactivateHint(username, hint) {
         where: {username},
         data: {[hint]: 2}
     })
+}
+
+export async function updateGameSessionTime(username, time) {
+    await prisma.gameSession.update({
+        where: {username},
+        data: {endTime: time}
+    })
+}
+
+export async function findOrCreateGameSession(username) {
+    const now = DateTime.local().setZone("Europe/Moscow").toISO();
+    const endTime = DateTime.local().plus({seconds: 30}).setZone("Europe/Moscow").toISO();
+    console.log("findOrCreate:", now)
+    console.log("findOrCreate:", endTime)
+    return await prisma.gameSession.upsert({where: {username}, update: {}, create: {username, endTime}});
 }

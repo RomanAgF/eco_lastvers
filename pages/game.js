@@ -8,7 +8,7 @@ import {withIronSession} from "next-iron-session";
 import getConfig from 'next/config';
 import ensureLoggedIn from "../helpers/ensureLoggedIn";
 import isGameStarted from "../helpers/isGameStarted";
-import {findGameSession} from "../services/gameSessionService";
+import {findOrCreateGameSession} from "../services/gameSessionService";
 
 
 const {serverRuntimeConfig} = getConfig()
@@ -34,7 +34,12 @@ function Game() {
                 </div>
                 <div className="millionaire-ui-answers">
                     {gameStore?.question?.answers.map(el =>
-                        <Answer key={el.id} id={el.id} text={el.text} hidden={el.hidden}/>
+                        <Answer
+                            key={el.id}
+                            id={el.id}
+                            text={el.text}
+                            hidden={el.hidden}
+                        />
                     )}
                 </div>
             </div>
@@ -48,11 +53,12 @@ export default observer(Game);
 export const getServerSideProps = withIronSession(
     ensureLoggedIn(async ({req}) => {
         const user = req.session.get('user');
-        const gameSession = await findGameSession(user.login);
 
         if (!isGameStarted()) {
             return {redirect: {destination: '/waiting', permanent: false}};
         }
+
+        const gameSession = await findOrCreateGameSession(user.login);
 
         if (gameSession.status !== 0) {
             return {redirect: {destination: '/results', permanent: false}};

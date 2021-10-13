@@ -1,10 +1,21 @@
 import gameStore from "../../store/gameStore";
-import {useEffect, useState} from "react"
+import {useEffect, useState} from "react";
 
 export default function Timer() {
-    const [time, setTime] = useState(gameStore.timeout)
+    const [time, setTime] = useState(gameStore.timeout);
+
     useEffect(() => {
-        setInterval(() => setTime(gameStore.timeout), 100)
+        const timer = setInterval(() => {
+            setTime(gameStore.timeout);
+
+            if (gameStore.timeout === 0) {
+                clearTimeout(timer);
+                alert("Timeout");
+                document.location = "/results";
+            }
+        }, 100)
+
+        return () => clearTimeout(timer);
     }, [])
 
     return <div className="millionaire-timer">

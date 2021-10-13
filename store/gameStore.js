@@ -8,21 +8,20 @@ class Game {
         half: {used: false, active: false},
         shield: {used: false, active: false}
     }
-    question = {name: "", answers: []}
+    question = {name: "", answers: []};
     isButtonsEnabled = true;
-    endTime = DateTime.now() + 30_000
+    endTime = DateTime.now() + 30_000;
 
     constructor() {
-        makeAutoObservable(this, {}, {deep: true})
+        makeAutoObservable(this, {}, {deep: true});
     }
 
     get timeout() {
-        const difference = Math.trunc((this.endTime - DateTime.now()) / 1000)
-        return (difference >= 0) ? difference: 0
+        const difference = Math.trunc((this.endTime - DateTime.now()) / 1000);
+        return (difference >= 0) ? difference: 0;
     }
 
     setHints(newHints) {
-        console.log(newHints)
         this.hints = newHints;
     }
 
@@ -30,7 +29,8 @@ class Game {
         this.hints = newQuestionData.hints;
         this.progress = newQuestionData.progress;
         this.question = newQuestionData.question;
-        this.enableButtons()
+        this.endTime = DateTime.fromISO(newQuestionData.endTime);
+        this.enableButtons();
     }
 
     disableButtons(){

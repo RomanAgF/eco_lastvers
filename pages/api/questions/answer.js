@@ -1,13 +1,19 @@
 import {withIronSession} from "next-iron-session";
 import getConfig from "next/config";
 import questions from "../../../questionsData";
-import isGameStarted from "../../../helpers/isGameStarted";
 import {
     incrementProgress,
-    findGameSession,
     setGameSessionStatus,
-    deactivateHint
+    deactivateHint, updateGameSessionTime
 } from "../../../services/gameSessionService";
+import {DateTime} from "luxon";
+import nc from "next-connect";
+import {
+    gameSessionMiddleware,
+    gameStartedMiddleware,
+    userCanPlayMiddleware,
+    userMiddleware
+} from "../../../helpers/apiMiddlewares";
 
 const {serverRuntimeConfig} = getConfig()
 
@@ -17,66 +23,47 @@ const gameStatuses = {
     LOOSE: 2
 }
 
-async function handler(req, res) {
-    if (req.method !== 'POST') {
-        res.status(405);
-        return;
-    }
+const handler = nc()
+    .use(gameStartedMiddleware)
+    .use(userMiddleware)
+    .use(gameSessionMiddleware)
+    .use(userCanPlayMiddleware)
+    .post(async (req, res) => {
+        const shieldActivated = req.gameSession.shield === 3;
+        const doubleActivated = req.gameSession.double === 3;
+        const halfActivated = req.gameSession.half === 3;
 
-    const user = req.session.get('user');
-    if (!user) {
-        res.status(401).send();
-        return;
-    }
+        // deactivate hints
+        if (shieldActivated) {
+            await deactivateHint(req.user.login, "shield");
+        }
+        if (doubleActivated) {
+            await deactivateHint(req.user.login, "double");
+        }
+        if (halfActivated) {
+            await deactivateHint(req.user.login, "half");
+        }
 
-    const gameSession = await findGameSession(user.login);
+        const question = questions[req.gameSession.progress];
 
-    if (!isGameStarted()) {
-        res.status(200).json({message: "GAME_NOT_STARTED"});
-        return;
-    }
+        const newEndTime = DateTime.local().plus({seconds: 32}).setZone("Europe/Moscow").toISO();
+        await updateGameSessionTime(req.user.login, newEndTime);
 
-    if ((gameSession.status !== gameStatuses.GAMESTARTED)) {
-        res.status(200).json({message: "GAME_OVER"});
-        return;
-    }
+        // correct answer
+        if (question.answers[req.body.id].accept) {
+            await incrementProgress(req.user.login);
+            res.status(200).json({correct: true});
+            return;
+        }
 
-    if (questions.length <= gameSession.progress) {
-        await setGameSessionStatus(user.login, gameStatuses.WON);
-    }
-
-    const shieldActivated = gameSession.shield === 3;
-    const doubleActivated = gameSession.double === 3;
-    const halfActivated = gameSession.half === 3;
-
-    // deactivate hints
-    if (shieldActivated) {
-        await deactivateHint(user.login, "shield");
-    }
-    if (doubleActivated) {
-        await deactivateHint(user.login, "double");
-    }
-    if (halfActivated) {
-        await deactivateHint(user.login, "half");
-    }
-
-    const question = questions[gameSession.progress];
-
-    // correct answer
-    if (question.answers[req.body.id].accept) {
-        await incrementProgress(user.login);
-        res.status(200).json({correct: true});
-        return;
-    }
-
-    // incorrect answer
-    if (shieldActivated) {
-        await incrementProgress(user.login);
-    } else if (!doubleActivated) {
-        await setGameSessionStatus(user.login, gameStatuses.LOOSE);
-    }
-    res.status(200).json({correct: false});
-}
+        // incorrect answer
+        if (shieldActivated) {
+            await incrementProgress(req.user.login);
+        } else if (!doubleActivated) {
+            await setGameSessionStatus(req.user.login, gameStatuses.LOOSE);
+        }
+        res.status(200).json({correct: false});
+    });
 
 
 export default withIronSession(handler, serverRuntimeConfig.ironSessionConfig);

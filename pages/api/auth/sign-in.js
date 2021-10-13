@@ -2,7 +2,6 @@ import prisma from "../../../context/prisma";
 import {withIronSession} from "next-iron-session";
 import getConfig from 'next/config';
 import comparePasswordWithHash from "../../../helpers/comparePasswordWithHash";
-import {createGameSession, findGameSession} from "../../../services/gameSessionService";
 
 const {serverRuntimeConfig} = getConfig()
 
@@ -13,8 +12,6 @@ async function handler(req, res) {
     }
 
     const {login, password} = req.body;
-
-    // TODO: login validator
 
     if (!login || !password) {
         res.status(400).json({
@@ -28,11 +25,6 @@ async function handler(req, res) {
     if (!user) {
         res.status(403).json({message: "User doesn't exist"});
         return;
-    }
-
-    const gameSession = await findGameSession(login);
-    if (!gameSession) {
-        await createGameSession(login)
     }
 
     if (comparePasswordWithHash(password, user.password)) {

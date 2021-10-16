@@ -1,20 +1,16 @@
-import {withIronSession} from "next-iron-session";
-import getConfig from "next/config";
-import {findGameSession, activateHint} from "../../../services/gameSessionService";
+import {activateHint, findGameSession} from "../../../services/gameSessionService";
 import unzipHint from "../../../helpers/unzipHint";
 import nc from "next-connect";
 import {
     gameSessionMiddleware,
-    gameStartedMiddleware,
     userCanPlayMiddleware,
-    userMiddleware
+    userMiddleware,
+    ironSessionMiddleware
 } from "../../../helpers/apiMiddlewares";
 
-const {serverRuntimeConfig} = getConfig()
 
-
-const handler = nc()
-    .use(gameStartedMiddleware)
+export default nc()
+    .use(ironSessionMiddleware)
     .use(userMiddleware)
     .use(gameSessionMiddleware)
     .use(userCanPlayMiddleware)
@@ -46,5 +42,7 @@ const handler = nc()
             half: unzipHint(half)
         });
     })
-
-export default withIronSession(handler, serverRuntimeConfig.ironSessionConfig);
+    .all((req, res) => {
+        // Respond with an error if requested method is not allowed
+        res.writeHead(405, {Allow: "POST"}).send();
+    })

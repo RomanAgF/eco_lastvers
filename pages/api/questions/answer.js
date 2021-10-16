@@ -1,21 +1,18 @@
-import {withIronSession} from "next-iron-session";
-import getConfig from "next/config";
 import questions from "../../../questionsData";
 import {
+    deactivateHint,
     incrementProgress,
     setGameSessionStatus,
-    deactivateHint, updateGameSessionTime
+    updateGameSessionTime
 } from "../../../services/gameSessionService";
 import {DateTime} from "luxon";
 import nc from "next-connect";
 import {
     gameSessionMiddleware,
-    gameStartedMiddleware,
+    ironSessionMiddleware,
     userCanPlayMiddleware,
     userMiddleware
 } from "../../../helpers/apiMiddlewares";
-
-const {serverRuntimeConfig} = getConfig()
 
 const gameStatuses = {
     GAMESTARTED: 0,
@@ -23,8 +20,8 @@ const gameStatuses = {
     LOOSE: 2
 }
 
-const handler = nc()
-    .use(gameStartedMiddleware)
+export default nc()
+    .use(ironSessionMiddleware)
     .use(userMiddleware)
     .use(gameSessionMiddleware)
     .use(userCanPlayMiddleware)
@@ -47,7 +44,7 @@ const handler = nc()
         const question = questions[req.gameSession.progress];
 
         const newEndTime = DateTime.local().plus({seconds: 32}).setZone("Europe/Moscow").toISO();
-        await updateGameSessionTime(req.user.login, newEndTime);
+        await updateGameSessionTime(req.user.login, doubleActivated ? undefined : newEndTime);
 
         // correct answer
         if (question.answers[req.body.id].accept) {
@@ -63,7 +60,8 @@ const handler = nc()
             await setGameSessionStatus(req.user.login, gameStatuses.LOOSE);
         }
         res.status(200).json({correct: false});
+    })
+    .all((req, res) => {
+        // Respond with an error if requested method is not allowed
+        res.writeHead(405, {Allow: "POST"}).send();
     });
-
-
-export default withIronSession(handler, serverRuntimeConfig.ironSessionConfig);

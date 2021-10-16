@@ -1,7 +1,7 @@
-import prisma from "../../../context/prisma";
 import {withIronSession} from "next-iron-session";
 import getConfig from 'next/config';
 import comparePasswordWithHash from "../../../helpers/comparePasswordWithHash";
+import {findUser} from "../../../services/userService";
 
 const {serverRuntimeConfig} = getConfig()
 
@@ -20,7 +20,7 @@ async function handler(req, res) {
         return;
     }
 
-    const user = await prisma.user.findUnique({where: {username: login}})
+    const user = await findUser(login);
 
     if (!user) {
         res.status(403).json({message: "User doesn't exist"});

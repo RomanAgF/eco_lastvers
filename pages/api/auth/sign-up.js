@@ -1,8 +1,7 @@
-import prisma from "../../../context/prisma";
 import {withIronSession} from "next-iron-session";
 import getConfig from 'next/config';
 import hashPassword from "../../../helpers/hashPassword";
-import {createGameSession, findGameSession} from "../../../services/gameSessionService";
+import {createUser} from "../../../services/userService";
 
 const {serverRuntimeConfig} = getConfig()
 
@@ -22,7 +21,7 @@ async function handler(req, res) {
         return
     }
 
-    if (!login.match(/^.{3,32}#[0-9]{4}$/i)){
+    if (!login.match(/^.{3,32}#[0-9]{4}$/i)) {
         res.status(400).json({
             message: "The username should be your discord username with tag after it, e.g. Qwerty#1234"
         })
@@ -37,13 +36,7 @@ async function handler(req, res) {
     }
 
     try {
-        await prisma.user.create({
-            data: {
-                username: login,
-                password: hashPassword(password1)
-            }
-        })
-
+        await createUser(login, hashPassword(password1))
         req.session.set("user", {login});
         await req.session.save();
     } catch (e) {

@@ -7,7 +7,7 @@ import gameStore from "../store/gameStore";
 import {withIronSession} from "next-iron-session";
 import getConfig from 'next/config';
 import ensureLoggedIn from "../helpers/ensureLoggedIn";
-import isGameStarted from "../helpers/isGameStarted";
+import canStartGame from "../helpers/canStartGame";
 import {findOrCreateGameSession} from "../services/gameSessionService";
 
 
@@ -54,7 +54,7 @@ export const getServerSideProps = withIronSession(
     ensureLoggedIn(async ({req}) => {
         const user = req.session.get('user');
 
-        if (!isGameStarted()) {
+        if (!canStartGame()) {
             return {redirect: {destination: '/waiting', permanent: false}};
         }
 

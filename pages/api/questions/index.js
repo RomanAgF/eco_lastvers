@@ -1,21 +1,17 @@
-import {withIronSession} from "next-iron-session";
-import getConfig from "next/config";
 import unzipHint from "../../../helpers/unzipHint";
 import questions from "../../../questionsData";
 import randomIntFromIntervalAndSeed from "../../../helpers/randomIntFromIntervalAndSeed";
 import nc from "next-connect";
 import {
     gameSessionMiddleware,
-    gameStartedMiddleware,
+    ironSessionMiddleware,
     userCanPlayMiddleware,
     userMiddleware
 } from "../../../helpers/apiMiddlewares";
 
-const {serverRuntimeConfig} = getConfig()
 
-
-const handler = nc()
-    .use(gameStartedMiddleware)
+export default nc()
+    .use(ironSessionMiddleware)
     .use(userMiddleware)
     .use(gameSessionMiddleware)
     .use(userCanPlayMiddleware)
@@ -64,5 +60,7 @@ const handler = nc()
 
         res.status(200).json(responseData);
     })
-
-export default withIronSession(handler, serverRuntimeConfig.ironSessionConfig);
+    .all((req, res) => {
+        // Respond with an error if requested method is not allowed
+        res.writeHead(405, {Allow: "GET"}).send()
+    });

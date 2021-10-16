@@ -9,6 +9,6 @@ module.exports = {
     reactStrictMode: true,
     serverRuntimeConfig: {
         ironSessionConfig,
-        GAME_START_TIME: {hour: 0, minute: 0, weekday: 3} // Moscow Timezone
+        GAME_START_TIME: {hour: 16, minute: 0, weekday: 6} // Moscow Timezone
     }
 }

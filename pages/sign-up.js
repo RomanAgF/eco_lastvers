@@ -3,10 +3,17 @@ import {withIronSession} from "next-iron-session";
 import getConfig from 'next/config';
 import ensureLoggedOut from "../helpers/ensureLoggedOut";
 import SignUpForm from "../components/forms/SignUpForm";
+import canSignInOrSignUp from "../helpers/canSignInOrSignUp";
+import {DateTime} from "luxon";
+import ClosedRegistration from "../components/ClosedRegistration";
 
 const {serverRuntimeConfig} = getConfig()
 
-export default function SignUp() {
+export default function SignUp({registrationIsOpen, startTime}) {
+    if (!registrationIsOpen) {
+        return <ClosedRegistration startTime={startTime}/>
+    }
+
     return (
         <Welcome>
             <SignUpForm/>
@@ -16,7 +23,11 @@ export default function SignUp() {
 
 export const getServerSideProps = withIronSession(
     ensureLoggedOut(() => {
-        return {props: {},}
+        const startTime = DateTime
+            .fromObject(serverRuntimeConfig.GAME_START_TIME, {zone: "Europe/Moscow"})
+            .minus({hours: 1})
+            .toISO();
+        return {props: {registrationIsOpen: canSignInOrSignUp(), startTime}}
     }, '/game'),
     serverRuntimeConfig.ironSessionConfig
 )

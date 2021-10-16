@@ -1,52 +1,43 @@
-import {withIronSession} from "next-iron-session";
-import getConfig from 'next/config';
 import hashPassword from "../../../helpers/hashPassword";
 import {createUser} from "../../../services/userService";
-
-const {serverRuntimeConfig} = getConfig()
-
-async function handler(req, res) {
-    if (req.method !== "POST") {
-        res.status(405).send();
-        return
-    }
-
-    const {login, password1, password2} = req.body;
+import nc from "next-connect";
+import {ironSessionMiddleware} from "../../../helpers/apiMiddlewares";
 
 
-    if (!login || !password1 || !password2) {
-        res.status(400).json({
-            message: "login or password is missing or incorrect"
-        })
-        return
-    }
+export default nc()
+    .use(ironSessionMiddleware)
+    .post(async (req, res) => {
+        const {login, password1, password2} = req.body;
 
-    if (!login.match(/^.{3,32}#[0-9]{4}$/i)) {
-        res.status(400).json({
-            message: "The username should be your discord username with tag after it, e.g. Qwerty#1234"
-        })
-        return
-    }
+        if (!login || !password1 || !password2) {
+            res.status(400).json({message: "login or password is missing or incorrect"})
+            return
+        }
 
-    if (password1 !== password2) {
-        res.status(400).json({
-            message: "passwords doesn't match"
-        })
-        return
-    }
+        if (!login.match(/^.{3,32}#[0-9]{4}$/i)) {
+            res.status(400).json({
+                message: "The username should be your discord username with tag after it, e.g. Qwerty#1234"
+            })
+            return
+        }
 
-    try {
-        await createUser(login, hashPassword(password1))
-        req.session.set("user", {login});
-        await req.session.save();
-    } catch (e) {
-        res.status(400).json({
-            message: "User with that username already exist"
-        })
-        return
-    }
+        if (password1 !== password2) {
+            res.status(400).json({message: "passwords doesn't match"})
+            return
+        }
 
-    res.status(200).send();
-}
+        try {
+            await createUser(login, hashPassword(password1))
+            req.session.set("user", {login});
+            await req.session.save();
+        } catch (e) {
+            res.status(400).json({message: "User with that username already exist"})
+            return
+        }
 
-export default withIronSession(handler, serverRuntimeConfig.ironSessionConfig);
+        res.status(200).send();
+    })
+    .all((req, res) => {
+        // Respond with an error if requested method is not allowed
+        res.writeHead(405, {Allow: "POST"}).send()
+    })

@@ -3,9 +3,9 @@ import unzipHint from "../../../helpers/unzipHint";
 import nc from "next-connect";
 import {
     gameSessionMiddleware,
+    ironSessionMiddleware,
     userCanPlayMiddleware,
-    userMiddleware,
-    ironSessionMiddleware
+    userMiddleware
 } from "../../../helpers/apiMiddlewares";
 
 

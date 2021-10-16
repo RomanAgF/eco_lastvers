@@ -8,6 +8,7 @@ import Link from "next/link";
 
 const {serverRuntimeConfig} = getConfig()
 
+
 export default function Waiting(props) {
     const modalRef = useRef();
     const modalWindowRef = useRef();

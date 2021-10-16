@@ -9,6 +9,7 @@ import ClosedRegistration from "../components/ClosedRegistration";
 
 const {serverRuntimeConfig} = getConfig()
 
+
 export default function SignUp({registrationIsOpen, startTime}) {
     if (!registrationIsOpen) {
         return <ClosedRegistration startTime={startTime}/>

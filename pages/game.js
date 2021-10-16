@@ -10,7 +10,6 @@ import ensureLoggedIn from "../helpers/ensureLoggedIn";
 import canStartGame from "../helpers/canStartGame";
 import {findOrCreateGameSession} from "../services/gameSessionService";
 
-
 const {serverRuntimeConfig} = getConfig()
 
 

@@ -13,12 +13,10 @@ import {
     userCanPlayMiddleware,
     userMiddleware
 } from "../../../helpers/apiMiddlewares";
+import getConfig from "next/config";
 
-const gameStatuses = {
-    GAMESTARTED: 0,
-    WON: 1,
-    LOOSE: 2
-}
+const {serverRuntimeConfig} = getConfig()
+
 
 export default nc()
     .use(ironSessionMiddleware)
@@ -26,9 +24,9 @@ export default nc()
     .use(gameSessionMiddleware)
     .use(userCanPlayMiddleware)
     .post(async (req, res) => {
-        const shieldActivated = req.gameSession.shield === 3;
-        const doubleActivated = req.gameSession.double === 3;
-        const halfActivated = req.gameSession.half === 3;
+        const shieldActivated = req.gameSession.shield === serverRuntimeConfig.HINT_STATE.ACTIVE;
+        const doubleActivated = req.gameSession.double === serverRuntimeConfig.HINT_STATE.ACTIVE;
+        const halfActivated = req.gameSession.half === serverRuntimeConfig.HINT_STATE.ACTIVE;
 
         // deactivate hints
         if (shieldActivated) {
@@ -57,7 +55,7 @@ export default nc()
         if (shieldActivated) {
             await incrementProgress(req.user.login);
         } else if (!doubleActivated) {
-            await setGameSessionStatus(req.user.login, gameStatuses.LOOSE);
+            await setGameSessionStatus(req.user.login, serverRuntimeConfig.GAME_STATUS.LOOSE);
         }
         res.status(200).json({correct: false});
     })

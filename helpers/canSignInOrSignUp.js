@@ -3,6 +3,7 @@ import {DateTime, Interval} from "luxon";
 
 const {serverRuntimeConfig} = getConfig()
 
+
 export default function canSignInOrSignUp() {
     const startTime = DateTime.fromObject(serverRuntimeConfig.GAME_START_TIME, {zone: "Europe/Moscow"});
 

@@ -14,11 +14,11 @@ const STYLES = {
 function Answer(props) {
     const [styles, setStyles] = useState(props.hidden ? STYLES.hidden : STYLES.default);
 
-    if (props.hidden && (styles !== STYLES.hidden)){
+    if (props.hidden && (styles !== STYLES.hidden)) {
         setStyles(STYLES.hidden);
     }
 
-    if (!props.hidden && (styles === STYLES.hidden)){
+    if (!props.hidden && (styles === STYLES.hidden)) {
         setStyles(STYLES.default);
     }
 

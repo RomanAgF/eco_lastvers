@@ -1,10 +1,16 @@
+import getConfig from "next/config";
+
+const {serverRuntimeConfig} = getConfig()
+
+
 export default function unzip(hint) {
     switch (hint) {
-        case 0: // 00
+        case serverRuntimeConfig.HINT_STATE.UNUSED: // 00
             return {used: false, active: false}
-        case 2: // 10
+        case serverRuntimeConfig.HINT_STATE.USED: // 10
             return {used: true, active: false}
-        case 3: // 11
+        case serverRuntimeConfig.HINT_STATE.ACTIVE: // 11
             return {used: true, active: true}
     }
 }
+

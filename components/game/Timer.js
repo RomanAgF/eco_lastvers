@@ -11,12 +11,11 @@ export default function Timer() {
 
             if (gameStore.timeout === 0) {
                 clearInterval(timerId);
-                const delayId = setTimeout(() => {
+                setTimeout(() => {
                     alert("Timeout");
                     axios.get('/api/questions').then(() =>
                         document.location = "/results"
                     )
-                    clearTimeout(delayId);
                 }, 500)
             }
         }, 100)

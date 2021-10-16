@@ -7,6 +7,7 @@ import Link from "next/link";
 
 const {serverRuntimeConfig} = getConfig()
 
+
 export default function Results(props) {
     const modalRef = useRef();
     const modalWindowRef = useRef();
@@ -33,7 +34,7 @@ export const getServerSideProps = withIronSession(
         const user = req.session.get('user');
         const gameSession = await findGameSession(user.login);
 
-        if (!gameSession){
+        if (!gameSession) {
             return {redirect: {destination: '/waiting', permanent: false}}
         }
 

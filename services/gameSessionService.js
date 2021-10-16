@@ -1,5 +1,9 @@
 import prisma from "../context/prisma";
 import {DateTime} from "luxon"
+import getConfig from "next/config";
+
+const {serverRuntimeConfig} = getConfig()
+
 
 export async function incrementProgress(username) {
     const gameSession = await findGameSession(username);
@@ -20,14 +24,14 @@ export async function setGameSessionStatus(username, status) {
 export async function activateHint(username, hint) {
     return await prisma.gameSession.update({
         where: {username},
-        data: {[hint]: 3}
+        data: {[hint]: serverRuntimeConfig.HINT_STATE.ACTIVE}
     })
 }
 
 export async function deactivateHint(username, hint) {
     return await prisma.gameSession.update({
         where: {username},
-        data: {[hint]: 2}
+        data: {[hint]: serverRuntimeConfig.HINT_STATE.USED}
     })
 }
 

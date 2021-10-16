@@ -1,16 +1,15 @@
-import {withIronSession} from "next-iron-session";
-import getConfig from "next/config";
+import nc from "next-connect";
+import {ironSessionMiddleware} from "../../../helpers/apiMiddlewares";
 
-const {serverRuntimeConfig} = getConfig()
 
-function handler(req, res) {
-    req.session.destroy();
+export default nc()
+    .use(ironSessionMiddleware)
+    .get((req, res) => {
+        req.session.destroy();
+        res.redirect('/');
+    })
+    .all((req, res) => {
+        req.session.destroy();
+        res.send("Logged out");
+    })
 
-    if (req.method === "GET") {
-        return res.redirect('/');
-    }
-
-    res.send("Logged out");
-}
-
-export default withIronSession(handler, serverRuntimeConfig.ironSessionConfig);

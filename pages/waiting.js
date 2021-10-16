@@ -37,7 +37,7 @@ export default function Waiting(props) {
         setTimeout(() => modalWindow.classList.add("modal-window_show"), 800);
 
         const timeNow = DateTime.local();
-        const timeout = Interval.fromDateTimes(timeNow, startDate).length("milliseconds") + 500;
+        const timeout = Interval.fromDateTimes(timeNow, startDate).length("milliseconds") + 1100;
 
         if (timeout) {
             setTimeout(() => document.location = '/game', timeout);

@@ -1,6 +1,5 @@
 import questions from "../../../questionsData";
 import {
-    deactivateHint,
     incrementProgress,
     setGameSessionStatus,
     updateGameSessionTime
@@ -24,25 +23,10 @@ export default nc()
     .use(gameSessionMiddleware)
     .use(userCanPlayMiddleware)
     .post(async (req, res) => {
-        const shieldActivated = req.gameSession.shield === serverRuntimeConfig.HINT_STATE.ACTIVE;
-        const doubleActivated = req.gameSession.double === serverRuntimeConfig.HINT_STATE.ACTIVE;
-        const halfActivated = req.gameSession.half === serverRuntimeConfig.HINT_STATE.ACTIVE;
-
-        // deactivate hints
-        if (shieldActivated) {
-            await deactivateHint(req.user.login, "shield");
-        }
-        if (doubleActivated) {
-            await deactivateHint(req.user.login, "double");
-        }
-        if (halfActivated) {
-            await deactivateHint(req.user.login, "half");
-        }
-
         const question = questions[req.gameSession.progress];
 
         const newEndTime = DateTime.local().plus({seconds: 32}).setZone("Europe/Moscow").toISO();
-        await updateGameSessionTime(req.user.login, doubleActivated ? undefined : newEndTime);
+        await updateGameSessionTime(req.user.login, newEndTime);
 
         // correct answer
         if (question.answers[req.body.id].accept) {
@@ -51,12 +35,7 @@ export default nc()
             return;
         }
 
-        // incorrect answer
-        if (shieldActivated) {
-            await incrementProgress(req.user.login);
-        } else if (!doubleActivated) {
-            await setGameSessionStatus(req.user.login, serverRuntimeConfig.GAME_STATUS.LOOSE);
-        }
+        await setGameSessionStatus(req.user.login, serverRuntimeConfig.GAME_STATUS.LOOSE);
         res.status(200).json({correct: false});
     })
     .all((req, res) => {

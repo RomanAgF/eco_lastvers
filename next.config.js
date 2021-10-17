@@ -5,9 +5,7 @@ const ironSessionConfig = {
 }
 
 const GAME_STATUS = {STARTED: 0, WON: 1, LOOSE: 2};
-const GAME_START_TIME = {hour: 12, minute: 48, weekday: 7}; // Moscow Timezone
-const HINT_STATE = {UNUSED: 0, USED: 2, ACTIVE: 3};
-
+const GAME_START_TIME = {hour: 16, minute: 29, weekday: 7}; // Moscow Timezone
 
 module.exports = {
     poweredByHeader: false,
@@ -16,6 +14,5 @@ module.exports = {
         ironSessionConfig,
         GAME_START_TIME,
         GAME_STATUS,
-        HINT_STATE
     }
 }

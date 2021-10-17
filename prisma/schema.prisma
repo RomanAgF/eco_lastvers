@@ -1,5 +1,5 @@
 datasource db {
-  provider = env("DATABASE_PROVIDER")
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -15,9 +15,6 @@ model User {
 model GameSession {
   username String @id @unique
   progress Int @default(0)
-  double Int @default(0)
-  shield Int @default(0)
-  half Int @default(0)
   status Int @default(0)
   endTime DateTime
 }

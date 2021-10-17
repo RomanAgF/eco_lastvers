@@ -21,20 +21,6 @@ export async function setGameSessionStatus(username, status) {
     return await prisma.gameSession.update({where: {username}, data: {status}})
 }
 
-export async function activateHint(username, hint) {
-    return await prisma.gameSession.update({
-        where: {username},
-        data: {[hint]: serverRuntimeConfig.HINT_STATE.ACTIVE}
-    })
-}
-
-export async function deactivateHint(username, hint) {
-    return await prisma.gameSession.update({
-        where: {username},
-        data: {[hint]: serverRuntimeConfig.HINT_STATE.USED}
-    })
-}
-
 export async function updateGameSessionTime(username, time) {
     return await prisma.gameSession.update({
         where: {username},

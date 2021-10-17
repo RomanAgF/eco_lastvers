@@ -14,8 +14,8 @@ const questions = [
         question:
             "Which place is used most of all for participating in ECO bounties?",
         answers: [
-            {text: "Telegram chat", accept: true},
-            {text: "Discord", accept: false},
+            {text: "Telegram chat", accept: false},
+            {text: "Discord", accept: true},
             {text: "Wechat", accept: false},
             {text: "Slack", accept: false},
         ]

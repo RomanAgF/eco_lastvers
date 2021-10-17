@@ -5,7 +5,7 @@ const ironSessionConfig = {
 }
 
 const GAME_STATUS = {STARTED: 0, WON: 1, LOOSE: 2};
-const GAME_START_TIME = {hour: 20, minute: 13, weekday: 6}; // Moscow Timezone
+const GAME_START_TIME = {hour: 12, minute: 48, weekday: 7}; // Moscow Timezone
 const HINT_STATE = {UNUSED: 0, USED: 2, ACTIVE: 3};
 
 

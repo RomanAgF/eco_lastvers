@@ -1,5 +1,5 @@
 import {makeAutoObservable} from "mobx";
-import {DateTime} from "luxon"
+import {DateTime, Interval} from "luxon"
 
 class Game {
     progress = 0;
@@ -10,34 +10,34 @@ class Game {
     }
     question = {name: "", answers: []};
     isButtonsEnabled = true;
-    endTime = DateTime.now() + 30_000;
+    endTime = DateTime.local().plus({seconds: 30}).setZone("Europe/Moscow");
 
     constructor() {
         makeAutoObservable(this, {}, {deep: true});
     }
 
     get timeout() {
-        const difference = Math.trunc((this.endTime - DateTime.now()) / 1000);
-        return (difference >= 0) ? difference: 0;
+        const timeNow = DateTime.local().setZone("Europe/Moscow");
+        return Math.trunc(Interval.fromDateTimes(timeNow, this.endTime).length("seconds")) || 0;
     }
 
     setHints(newHints) {
         this.hints = newHints;
     }
 
-    updateQuestion(newQuestionData){
+    updateQuestion(newQuestionData) {
         this.hints = newQuestionData.hints;
         this.progress = newQuestionData.progress;
         this.question = newQuestionData.question;
-        this.endTime = DateTime.fromISO(newQuestionData.endTime);
+        this.endTime = DateTime.fromISO(newQuestionData.endTime, {zone: "Europe/Moscow"});
         this.enableButtons();
     }
 
-    disableButtons(){
+    disableButtons() {
         this.isButtonsEnabled = false;
     }
 
-    enableButtons(){
+    enableButtons() {
         this.isButtonsEnabled = true;
     }
 }

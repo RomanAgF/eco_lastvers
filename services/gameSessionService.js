@@ -29,6 +29,6 @@ export async function updateGameSessionTime(username, time) {
 }
 
 export async function findOrCreateGameSession(username) {
-    const endTime = DateTime.local().plus({seconds: 30}).setZone("Europe/Moscow").toISO();
+    const endTime = DateTime.utc().plus({seconds: 30}).toISO();
     return await prisma.gameSession.upsert({where: {username}, update: {}, create: {username, endTime}});
 }

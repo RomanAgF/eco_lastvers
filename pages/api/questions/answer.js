@@ -25,7 +25,7 @@ export default nc()
     .post(async (req, res) => {
         const question = questions[req.gameSession.progress];
 
-        const newEndTime = DateTime.local().plus({seconds: 32}).setZone("Europe/Moscow").toISO();
+        const newEndTime = DateTime.utc().plus({seconds: 32}).toISO();
         await updateGameSessionTime(req.user.login, newEndTime);
 
         // correct answer

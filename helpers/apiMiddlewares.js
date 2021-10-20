@@ -34,8 +34,8 @@ export function gameSessionMiddleware(req, res, next) {
 }
 
 export async function userCanPlayMiddleware(req, res, next) {
-    const endTime = DateTime.fromJSDate(req.gameSession.endTime).setZone("Europe/Moscow");
-    const currentTime = DateTime.local().setZone("Europe/Moscow");
+    const endTime = DateTime.fromJSDate(req.gameSession.endTime);
+    const currentTime = DateTime.utc();
 
     if (questions.length <= req.gameSession.progress) {
         await setGameSessionStatus(req.user.login, serverRuntimeConfig.GAME_STATUS.WON);

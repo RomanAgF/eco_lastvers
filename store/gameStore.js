@@ -5,21 +5,21 @@ class Game {
     progress = 0;
     question = {name: "", answers: []};
     isButtonsEnabled = true;
-    endTime = DateTime.local().plus({seconds: 30}).setZone("Europe/Moscow");
+    endTime = DateTime.utc().plus({seconds: 30});
 
     constructor() {
         makeAutoObservable(this, {}, {deep: true});
     }
 
     get timeout() {
-        const timeNow = DateTime.local().setZone("Europe/Moscow");
+        const timeNow = DateTime.utc();
         return Math.trunc(Interval.fromDateTimes(timeNow, this.endTime).length("seconds")) || 0;
     }
 
     updateQuestion(newQuestionData) {
         this.progress = newQuestionData.progress;
         this.question = newQuestionData.question;
-        this.endTime = DateTime.fromISO(newQuestionData.endTime, {zone: "Europe/Moscow"});
+        this.endTime = DateTime.fromISO(newQuestionData.endTime);
         this.enableButtons();
     }
 

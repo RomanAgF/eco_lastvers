@@ -8,7 +8,7 @@ class Game {
     endTime = DateTime.utc().plus({seconds: 30});
 
     constructor() {
-        makeAutoObservable(this, {}, {deep: true});
+        makeAutoObservable(this);
     }
 
     get timeout() {

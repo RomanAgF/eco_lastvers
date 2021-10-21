@@ -5,7 +5,7 @@ class Game {
     progress = 0;
     question = {name: "", answers: []};
     isButtonsEnabled = true;
-    endTime = DateTime.utc().plus({seconds: 30});
+    endTime = DateTime.utc().plus({seconds: 3014});
 
     constructor() {
         makeAutoObservable(this);

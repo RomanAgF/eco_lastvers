@@ -1,8 +1,9 @@
 import gameStore from "../../store/gameStore";
 import {useEffect, useState} from "react";
 import axios from "axios";
+import {observer, } from "mobx-react-lite";
 
-export default function Timer() {
+function Timer() {
     const [time, setTime] = useState(gameStore.timeout);
 
     useEffect(() => {
@@ -20,11 +21,13 @@ export default function Timer() {
             }
         }, 100)
 
-        return () => clearInterval(timer);
-    }, [])
+        return () => clearInterval(timerId);
+    }, [gameStore.endTime])
 
     return <div className="millionaire-timer">
         <div className="millionaire-timer__text">{time}</div>
         <div className="millionaire-timer__bg"/>
     </div>
 }
+
+export default Timer;

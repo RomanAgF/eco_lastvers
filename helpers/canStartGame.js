@@ -5,6 +5,10 @@ const {serverRuntimeConfig} = getConfig()
 
 
 function canStartGame() {
+    if (serverRuntimeConfig.DEBUG){
+        return true;
+    }
+
     const startTime = DateTime.fromObject(serverRuntimeConfig.GAME_START_TIME, {zone: "Europe/Moscow"});
     const endTime = startTime.plus({seconds: 5});
 

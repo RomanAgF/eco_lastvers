@@ -5,6 +5,10 @@ const {serverRuntimeConfig} = getConfig()
 
 
 export default function canSignInOrSignUp() {
+    if (serverRuntimeConfig.DEBUG) {
+        return true;
+    }
+
     const startTime = DateTime.fromObject(serverRuntimeConfig.GAME_START_TIME, {zone: "Europe/Moscow"});
 
     const interval = Interval.fromDateTimes(startTime.minus({hours: 24}), startTime);

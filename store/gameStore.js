@@ -5,14 +5,21 @@ class Game {
     progress = 0;
     question = {name: "", answers: []};
     isButtonsEnabled = true;
-    endTime = DateTime.utc().plus({seconds: 3014});
+    endTime = DateTime.utc().plus({seconds: 30});
+    serverTime = DateTime.utc();
 
     constructor() {
         makeAutoObservable(this);
     }
 
+    calculateDifference() {
+        const positive = Interval.fromDateTimes(DateTime.utc(), this.serverTime).length("milliseconds");
+        const negative = -Interval.fromDateTimes(this.serverTime, DateTime.utc()).length("milliseconds");
+        this.difference = positive ? positive : negative;
+    }
+
     get timeout() {
-        const timeNow = DateTime.utc();
+        const timeNow = DateTime.utc().plus({milliseconds: this.difference});
         return Math.trunc(Interval.fromDateTimes(timeNow, this.endTime).length("seconds")) || 0;
     }
 
@@ -20,6 +27,8 @@ class Game {
         this.progress = newQuestionData.progress;
         this.question = newQuestionData.question;
         this.endTime = DateTime.fromISO(newQuestionData.endTime);
+        this.serverTime = DateTime.fromISO(newQuestionData.serverTime);
+        this.calculateDifference();
         this.enableButtons();
     }
 

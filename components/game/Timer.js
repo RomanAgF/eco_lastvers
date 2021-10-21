@@ -1,7 +1,6 @@
 import gameStore from "../../store/gameStore";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {observer, } from "mobx-react-lite";
 
 function Timer() {
     const [time, setTime] = useState(gameStore.timeout);

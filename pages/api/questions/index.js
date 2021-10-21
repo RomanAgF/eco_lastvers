@@ -6,7 +6,7 @@ import {
     userCanPlayMiddleware,
     userMiddleware
 } from "../../../helpers/apiMiddlewares";
-
+import {DateTime} from "luxon";
 
 export default nc()
     .use(ironSessionMiddleware)
@@ -30,7 +30,8 @@ export default nc()
                 name: questions[req.gameSession.progress].question,
                 answers
             },
-            endTime: req.gameSession.endTime
+            endTime: req.gameSession.endTime,
+            serverTime: DateTime.utc().toISO()
         }
 
         res.status(200).json(responseData);

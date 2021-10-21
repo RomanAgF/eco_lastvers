@@ -26,6 +26,20 @@ export default nc()
             return
         }
 
+        if (password1.length > 50) {
+            res.status(400).json({
+                message: "Your password must be shorter than 50 characters"
+            })
+            return
+        }
+
+        if (password1.length < 6) {
+            res.status(400).json({
+                message: "Your password must be longer than 5 characters"
+            })
+            return
+        }
+
         try {
             await createUser(login, hashPassword(password1))
             req.session.set("user", {login});

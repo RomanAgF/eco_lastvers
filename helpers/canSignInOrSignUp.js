@@ -13,6 +13,6 @@ export default function canSignInOrSignUp() {
 
     const interval = Interval.fromDateTimes(startTime.minus({hours: 24}), startTime);
 
-    const timeNow = DateTime.local().setZone("Europe/Moscow");
+    const timeNow = DateTime.utc().setZone("Europe/Moscow");
     return interval.contains(timeNow);
 }

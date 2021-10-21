@@ -42,17 +42,14 @@ function Answer(props) {
         }
 
         setTimeout(() => {
-            console.log("Here")
             axios.get('/api/questions').then(questionResponse => {
-                if (questionResponse.data) {
-                    gameStore.updateQuestion(questionResponse.data)
-                }
-            })
+                    if (questionResponse.data) {
+                        gameStore.updateQuestion(questionResponse.data)
+                    }
+                })
             setStyles(STYLES.default);
         }, 2 * 1000)
     }
-
-    console.log(`render ${props.id}`);
 
     return <div className={styles.join(' ')} onClick={submit}>
         {props.text}

@@ -13,15 +13,13 @@ function Timer() {
                 clearInterval(timerId);
                 setTimeout(() => {
                     alert("Timeout");
-                    axios.get('/api/questions').then(() =>
-                        document.location = "/results"
-                    )
+                    axios.get('/api/questions').then(() => document.location = "/results")
                 }, 500)
             }
         }, 100)
 
         return () => clearInterval(timerId);
-    }, [gameStore.endTime])
+    })
 
     return <div className="millionaire-timer">
         <div className="millionaire-timer__text">{time}</div>

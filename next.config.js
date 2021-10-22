@@ -6,7 +6,9 @@ const ironSessionConfig = {
 
 const GAME_STATUS = {STARTED: 0, WON: 1, LOOSE: 2};
 const GAME_START_TIME = {hour: 13, minute: 15, weekday: 4}; // Moscow Timezone
-const DEBUG = false;
+const QUESTIONS_QUANTITY = 10; // You can do it lower but not higher (yet)
+const DISABLE_WAITING_ROOM = false;
+const REGISTRATION_IS_ALWAYS_OPEN = false;
 
 module.exports = {
     poweredByHeader: false,
@@ -15,6 +17,10 @@ module.exports = {
         ironSessionConfig,
         GAME_START_TIME,
         GAME_STATUS,
-        DEBUG
+        DISABLE_WAITING_ROOM,
+        REGISTRATION_IS_ALWAYS_OPEN
+    },
+    publicRuntimeConfig: {
+        QUESTIONS_QUANTITY
     }
 }

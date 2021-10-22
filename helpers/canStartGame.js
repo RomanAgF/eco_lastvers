@@ -5,7 +5,7 @@ const {serverRuntimeConfig} = getConfig()
 
 
 function canStartGame() {
-    if (serverRuntimeConfig.DEBUG){
+    if (serverRuntimeConfig.DISABLE_WAITING_ROOM){
         return true;
     }
 

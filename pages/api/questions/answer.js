@@ -1,4 +1,3 @@
-import questions from "../../../questionsData";
 import {
     incrementProgress,
     setGameSessionStatus,
@@ -13,6 +12,11 @@ import {
     userMiddleware
 } from "../../../helpers/apiMiddlewares";
 import getConfig from "next/config";
+import shuffleArrayBySeed from "../../../helpers/shuffleArrayBySeed";
+
+import easyQuestions from "../../../questionsData/easyQuestions";
+import mediumQuestions from "../../../questionsData/mediumQuestions";
+import hardQuestions from "../../../questionsData/hardQuestions";
 
 const {serverRuntimeConfig} = getConfig()
 
@@ -23,18 +27,25 @@ export default nc()
     .use(gameSessionMiddleware)
     .use(userCanPlayMiddleware)
     .post(async (req, res) => {
+        const questions = [
+            ...shuffleArrayBySeed(easyQuestions, req.gameSession.username).slice(0, 3),
+            ...shuffleArrayBySeed(mediumQuestions, req.gameSession.username).slice(0, 3),
+            ...shuffleArrayBySeed(hardQuestions, req.gameSession.username).slice(0, 4)
+        ]
+
         const question = questions[req.gameSession.progress];
 
         const newEndTime = DateTime.utc().plus({seconds: 32}).toISO();
         await updateGameSessionTime(req.user.login, newEndTime);
 
-        // correct answer
+        // if answer is correct
         if (question.answers[req.body.id].accept) {
             await incrementProgress(req.user.login);
             res.status(200).json({correct: true});
             return;
         }
 
+        // if answer is incorrect
         await setGameSessionStatus(req.user.login, serverRuntimeConfig.GAME_STATUS.LOOSE);
         res.status(200).json({correct: false});
     })

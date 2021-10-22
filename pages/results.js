@@ -5,8 +5,7 @@ import {useEffect, useRef} from "react";
 import {findGameSession} from "../services/gameSessionService";
 import Link from "next/link";
 
-const {serverRuntimeConfig} = getConfig()
-
+const {serverRuntimeConfig, publicRuntimeConfig} = getConfig()
 
 export default function Results(props) {
     const modalRef = useRef();
@@ -22,7 +21,7 @@ export default function Results(props) {
 
     return <div className="modal-overlay modal-overlay_fill-bg" ref={modalRef}>
         <div className="modal-window ui" ref={modalWindowRef}>
-            <h1>Well that&apos;s it, {props.progress} of 10</h1>
+            <h1>Well that&apos;s it, {props.progress} of {publicRuntimeConfig.QUESTIONS_QUANTITY}</h1>
             <Link href="/api/auth/logout">Logout</Link><br/>
             <Link href="/waiting">Wait for the next game</Link>
         </div>

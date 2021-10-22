@@ -5,7 +5,7 @@ const {serverRuntimeConfig} = getConfig()
 
 
 export default function canSignInOrSignUp() {
-    if (serverRuntimeConfig.DEBUG) {
+    if (serverRuntimeConfig.REGISTRATION_IS_ALWAYS_OPEN) {
         return true;
     }
 

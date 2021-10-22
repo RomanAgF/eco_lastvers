@@ -1,4 +1,3 @@
-import questions from "../../../questionsData";
 import nc from "next-connect";
 import {
     gameSessionMiddleware,
@@ -7,6 +6,11 @@ import {
     userMiddleware
 } from "../../../helpers/apiMiddlewares";
 import {DateTime} from "luxon";
+import shuffleArrayBySeed from "../../../helpers/shuffleArrayBySeed";
+
+import easyQuestions from "../../../questionsData/easyQuestions"
+import mediumQuestions from "../../../questionsData/mediumQuestions"
+import hardQuestions from "../../../questionsData/hardQuestions"
 
 export default nc()
     .use(ironSessionMiddleware)
@@ -14,8 +18,13 @@ export default nc()
     .use(gameSessionMiddleware)
     .use(userCanPlayMiddleware)
     .get(async (req, res) => {
-        // copy objects
-        const answers = questions[req.gameSession.progress].answers.map(el => ({...el}));
+        const questions = [
+            ...shuffleArrayBySeed(easyQuestions, req.gameSession.username).slice(0, 3),
+            ...shuffleArrayBySeed(mediumQuestions, req.gameSession.username).slice(0, 3),
+            ...shuffleArrayBySeed(hardQuestions, req.gameSession.username).slice(0, 4)
+        ]
+
+        const answers = questions[req.gameSession.progress];
 
         // delete information about correct answers and add ID
         answers.forEach((el, index) => {

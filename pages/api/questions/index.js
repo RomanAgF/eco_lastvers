@@ -24,7 +24,7 @@ export default nc()
             ...shuffleArrayBySeed(hardQuestions, req.gameSession.username).slice(0, 4)
         ]
 
-        const answers = questions[req.gameSession.progress];
+        const answers = questions[req.gameSession.progress].answers.map(el => ({...el}));
 
         // delete information about correct answers and add ID
         answers.forEach((el, index) => {

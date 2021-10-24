@@ -1,15 +1,13 @@
 import nc from "next-connect";
-import {ironSessionMiddleware} from "../../../helpers/apiMiddlewares";
-
+import { ironSessionMiddleware } from "../../../helpers/apiMiddlewares";
 
 export default nc()
-    .use(ironSessionMiddleware)
-    .get((req, res) => {
-        req.session.destroy();
-        res.redirect('/');
-    })
-    .all((req, res) => {
-        req.session.destroy();
-        res.send("Logged out");
-    })
-
+  .use(ironSessionMiddleware)
+  .get((req, res) => {
+    req.session.destroy();
+    res.redirect("/");
+  })
+  .all((req, res) => {
+    req.session.destroy();
+    res.send("Logged out");
+  });

@@ -9,6 +9,7 @@ const GAME_START_TIME = {hour: 13, minute: 15, weekday: 4}; // Moscow Timezone
 const QUESTIONS_QUANTITY = 10; // You can do it lower but not higher (yet)
 const DISABLE_WAITING_ROOM = true;
 const REGISTRATION_IS_ALWAYS_OPEN = true;
+const TIMER_DELAY = 30;
 
 module.exports = {
     poweredByHeader: false,
@@ -21,6 +22,7 @@ module.exports = {
         REGISTRATION_IS_ALWAYS_OPEN
     },
     publicRuntimeConfig: {
-        QUESTIONS_QUANTITY
+        QUESTIONS_QUANTITY,
+        TIMER_DELAY
     }
 }

@@ -1,11 +1,14 @@
 import {makeAutoObservable} from "mobx";
-import {DateTime, Interval} from "luxon"
+import {DateTime, Interval} from "luxon";
+import getConfig from "next/config";
+
+const {publicRuntimeConfig} = getConfig();
 
 class Game {
     progress = 0;
     question = {name: "", answers: []};
     isButtonsEnabled = true;
-    endTime = DateTime.utc().plus({seconds: 30});
+    endTime = DateTime.utc().plus({seconds: publicRuntimeConfig.TIMER_DELAY});
     serverTime = DateTime.utc();
 
     constructor() {

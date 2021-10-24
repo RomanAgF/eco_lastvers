@@ -18,7 +18,7 @@ import easyQuestions from "../../../questionsData/easyQuestions";
 import mediumQuestions from "../../../questionsData/mediumQuestions";
 import hardQuestions from "../../../questionsData/hardQuestions";
 
-const {serverRuntimeConfig} = getConfig()
+const {serverRuntimeConfig, publicRuntimeConfig} = getConfig()
 
 
 export default nc()
@@ -35,7 +35,7 @@ export default nc()
 
         const question = questions[req.gameSession.progress];
 
-        const newEndTime = DateTime.utc().plus({seconds: 32}).toISO();
+        const newEndTime = DateTime.utc().plus({seconds: publicRuntimeConfig.TIMER_DELAY + 2}).toISO();
         await updateGameSessionTime(req.user.login, newEndTime);
 
         // if answer is correct

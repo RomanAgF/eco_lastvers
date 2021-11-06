@@ -16,5 +16,5 @@ model GameSession {
   username String @id @unique
   progress Int @default(0)
   status Int @default(0)
-  endTime DateTime
+  answer Int @default(-1)
 }

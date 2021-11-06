@@ -1,4 +1,3 @@
-import { useState } from "react";
 import axios from "../../helpers/frontendAxios";
 import gameStore from "../../store/gameStore";
 
@@ -18,56 +17,18 @@ const STYLES = {
     "millionaire-ui-answers__item",
     "ui",
     "millionaire-ui-answers__item_fail",
-  ],
-  hidden: [
-    "millionaire-ui-answers__item",
-    "ui",
-    "millionaire-ui-answers__item_lock",
-  ],
+  ]
 };
 
+
 function Answer(props) {
-  const [styles, setStyles] = useState(
-    props.hidden ? STYLES.hidden : STYLES.default
-  );
-
-  if (props.hidden && styles !== STYLES.hidden) {
-    setStyles(STYLES.hidden);
-  }
-
-  if (!props.hidden && styles === STYLES.hidden) {
-    setStyles(STYLES.default);
-  }
+  const styles = STYLES[props.state || "default"];
 
   async function submit() {
     if (!gameStore.isButtonsEnabled) return;
-    if (props.hidden) return;
-
-    setStyles(STYLES.picked);
-
     gameStore.disableButtons();
-
-    const response = await axios.post("/api/questions/answer", {
-      id: props.id,
-    });
-    if (response.data.correct) {
-      const song = new Audio("/sounds/true answer.mp3");
-      setStyles(STYLES.correct);
-      song.play();
-    } else {
-      const song = new Audio("/sounds/wrong_ans.mp3");
-      setStyles(STYLES.incorrect);
-      song.play();
-    }
-
-    setTimeout(() => {
-      axios.get("/api/questions").then(questionResponse => {
-        if (questionResponse.data) {
-          gameStore.updateQuestion(questionResponse.data);
-        }
-      });
-      setStyles(STYLES.default);
-    }, 2 * 1000);
+    gameStore.setAnswerState(props.id, "picked");
+    await axios.post("/api/questions/answer", {id: props.id});
   }
 
   return (

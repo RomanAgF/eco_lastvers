@@ -136,8 +136,6 @@ html {
 
 .millionaire-hints__hint_disabled:hover {
     background-color: #e64c65;
-
-
 }
 
 .millionaire-ui {
@@ -188,11 +186,16 @@ html {
     transition: 0.3s;
 }
 
-.millionaire-ui-answers__item_picked, .millionaire-ui-answers__item:hover:not(.millionaire-ui-answers__item_lock) {
+.millionaire-ui-answers__item_picked:not(.millionaire-ui-answers__item_lock)  {
     background-color: #f3fa97;
 }
 
-.millionaire-ui-answers__item_picked:before, .millionaire-ui-answers__item:hover:not(.millionaire-ui-answers__item_lock):before {
+.millionaire-ui-answers__item:hover:not(.millionaire-ui-answers__item_picked) {
+    background-color: #82a3d4;
+}
+
+.millionaire-ui-answers__item_picked:before,
+.millionaire-ui-answers__item:hover:not(.millionaire-ui-answers__item_lock):before {
     color: #FFF;
 }
 

@@ -1,21 +1,19 @@
 import getConfig from "next/config";
 import { DateTime, Interval } from "luxon";
 
+import getStartDateTime from "../helpers/getStartDateTime";
 const { serverRuntimeConfig } = getConfig();
 
 function canStartGame() {
   if (serverRuntimeConfig.DISABLE_WAITING_ROOM) {
     return true;
   }
+  const timeNow = DateTime.utc().setZone("Europe/Moscow");
 
-  const startTime = DateTime.fromObject(serverRuntimeConfig.GAME_START_TIME, {
-    zone: "Europe/Moscow",
-  });
-  const endTime = startTime.plus({ seconds: 5 });
+  const startTime = getStartDateTime();
+  const endTime = startTime.plus({ seconds: 2 });
 
   const interval = Interval.fromDateTimes(startTime, endTime);
-
-  const timeNow = DateTime.utc().setZone("Europe/Moscow");
   return interval.contains(timeNow);
 }
 

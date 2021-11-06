@@ -1,5 +1,5 @@
 import nc from "next-connect";
-import { ironSessionMiddleware } from "../../../helpers/apiMiddlewares";
+import ironSessionMiddleware from "../../../middlewares/ironSessionMiddleware";
 
 export default nc()
   .use(ironSessionMiddleware)

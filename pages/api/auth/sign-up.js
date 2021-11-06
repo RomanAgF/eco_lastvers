@@ -1,7 +1,7 @@
 import nc from "next-connect";
-import hashPassword from "../../../helpers/hashPassword";
+import hashPassword from "../../../helpers/password/hashPassword";
 import { createUser } from "../../../services/userService";
-import { ironSessionMiddleware } from "../../../helpers/apiMiddlewares";
+import ironSessionMiddleware from "../../../middlewares/ironSessionMiddleware";
 
 export default nc()
   .use(ironSessionMiddleware)

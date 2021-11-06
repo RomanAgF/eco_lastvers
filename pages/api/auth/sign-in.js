@@ -1,7 +1,7 @@
 import nc from "next-connect";
-import comparePasswordWithHash from "../../../helpers/comparePasswordWithHash";
+import comparePasswordWithHash from "../../../helpers/password/comparePasswordWithHash";
 import { findUser } from "../../../services/userService";
-import { ironSessionMiddleware } from "../../../helpers/apiMiddlewares";
+import ironSessionMiddleware from "../../../middlewares/ironSessionMiddleware";
 
 export default nc()
   .use(ironSessionMiddleware)

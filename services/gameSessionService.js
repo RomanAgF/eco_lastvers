@@ -1,8 +1,4 @@
-import { DateTime } from "luxon";
-import getConfig from "next/config";
 import prisma from "../context/prisma";
-
-const { publicRuntimeConfig } = getConfig();
 
 export async function incrementProgress(username) {
   const gameSession = await findGameSession(username);
@@ -23,20 +19,17 @@ export async function setGameSessionStatus(username, status) {
   });
 }
 
-export async function updateGameSessionTime(username, time) {
+export async function setGameSessionAnswer(username, answer) {
   return await prisma.gameSession.update({
     where: { username },
-    data: { endTime: time },
+    data: { answer },
   });
 }
 
 export async function findOrCreateGameSession(username) {
-  const endTime = DateTime.utc()
-    .plus({ seconds: publicRuntimeConfig.TIMER_DELAY })
-    .toISO();
   return await prisma.gameSession.upsert({
     where: { username },
     update: {},
-    create: { username, endTime },
+    create: { username },
   });
 }

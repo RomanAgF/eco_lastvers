@@ -11,7 +11,7 @@ function canStartGame() {
   const timeNow = DateTime.utc().setZone("Europe/Moscow");
 
   const startTime = getStartDateTime();
-  const endTime = startTime.plus({ seconds: 2 });
+  const endTime = startTime.plus({ seconds: 5 });
 
   const interval = Interval.fromDateTimes(startTime, endTime);
   return interval.contains(timeNow);

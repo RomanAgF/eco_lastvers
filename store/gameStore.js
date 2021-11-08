@@ -68,9 +68,13 @@ class Game {
 
         if (incorrect) {
           this.setAnswerState(incorrect, "incorrect");
+          const sound = new Audio("/sounds/wrong_ans.mp3");
+          sound.play();
         }
 
         this.setAnswerState(correct, "correct");
+        const sound = new Audio("/sounds/true answer.mp3");
+        sound.play();
       });
 
       setTimeout(()=> {

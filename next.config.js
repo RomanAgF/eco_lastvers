@@ -21,7 +21,7 @@ const GAME_START_TIME = {
 const QUESTIONS_QUANTITY = 10; // You can do it lower but not higher (yet)
 const DISABLE_WAITING_ROOM = process.env.DISABLE_WAITING_ROOM || false;
 const REGISTRATION_IS_ALWAYS_OPEN = process.env.REGISTRATION_IS_ALWAYS_OPEN || false;
-const TIME_TO_ANSWER = 15;
+const TIME_TO_ANSWER = 12;
 const TIME_TO_CHECK_ANSWER = 2;
 
 module.exports = {

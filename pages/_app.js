@@ -1,7 +1,21 @@
 import "../styles/globals.css";
 import Head from "next/head";
+// import useSocket from "../helpers/useSocket";
 
 function MyApp({ Component, pageProps }) {
+  // const socket = useSocket("localhost:4000");
+  //
+  // if (socket){
+  //   socket.on("message", (event)=>{
+  //     socket.send("gay porn is every where")
+  //     console.log(event)
+  //   })
+  //
+  //   socket.on("questions", console.log)
+  //
+  //   socket.send("Suck my dick")
+  // }
+
   return (
     <>
       <Head>

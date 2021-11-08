@@ -26,10 +26,7 @@ const questions = [
     answers: [
       { text: "CEO at ECO", accept: false },
       { text: "Co-founder at Coinlist", accept: false },
-      {
-        text: "Founding research scientist at the Stanford Bitcoin Group.",
-        accept: false,
-      },
+      { text: "Founding research scientist at the Stanford Bitcoin Group.", accept: false },
       { text: "All of the above", accept: true },
     ],
   },

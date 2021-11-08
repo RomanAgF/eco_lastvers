@@ -4,10 +4,7 @@ const questions = [
     question:
       "What email is used for collecting feedback and ideas about new features for ECO app?",
     answers: [
-      {
-        text: "No email is used for it, you only can share it in discord server",
-        accept: false,
-      },
+      { text: "No email is used for it, you only can share it in discord server", accept: false },
       { text: "support@eco.com", accept: true },
       { text: "feedback@eco.com", accept: false },
       { text: "app.feedback@eco.com", accept: false },
@@ -19,10 +16,7 @@ const questions = [
     answers: [
       { text: "Nice to meet you. Here’s how to talk to me", accept: false },
       { text: "top 10 Points holders", accept: true },
-      {
-        text: "incorrect number of arguments: !leaderboard [how many users to show]",
-        accept: false,
-      },
+      { text: "incorrect number of arguments: !leaderboard [how many users to show]", accept: false },
       { text: "top 25 Points holders", accept: false },
     ],
   },

@@ -17,4 +17,5 @@ model GameSession {
   progress Int @default(0)
   status Int @default(0)
   answer Int @default(-1)
+  ip String
 }

@@ -17,13 +17,13 @@ const questions = [
     id: 16,
     question: `"What will The Accountant show if you write "!leaderboard" command?"`,
     answers: [
-      { text: "Nice to meet you. Here’s how to talk to me:", accept: false },
-      { text: "top 10 Points holders: ", accept: true },
+      { text: "Nice to meet you. Here’s how to talk to me", accept: false },
+      { text: "top 10 Points holders", accept: true },
       {
         text: "incorrect number of arguments: !leaderboard [how many users to show]",
         accept: false,
       },
-      { text: "top 25 Points holders: ", accept: false },
+      { text: "top 25 Points holders", accept: false },
     ],
   },
   {

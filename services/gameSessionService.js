@@ -26,10 +26,10 @@ export async function setGameSessionAnswer(username, answer) {
   });
 }
 
-export async function findOrCreateGameSession(username) {
+export async function findOrCreateGameSession(username, ip) {
   return await prisma.gameSession.upsert({
     where: { username },
     update: {},
-    create: { username },
+    create: { username, ip },
   });
 }

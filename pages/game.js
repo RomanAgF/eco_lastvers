@@ -50,7 +50,7 @@ export const getServerSideProps = withIronSession(
       return {redirect: {destination: "/waiting", permanent: false}};
     }
 
-    const gameSession = await findOrCreateGameSession(user.login);
+    const gameSession = await findOrCreateGameSession(user.login, req.ip);
 
     const {STARTED, ANSWERED} = serverRuntimeConfig.GAME_STATUS;
     if ((gameSession.status !== STARTED) && (gameSession.status !== ANSWERED)) {

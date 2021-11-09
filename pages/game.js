@@ -50,7 +50,12 @@ export const getServerSideProps = withIronSession(
       return {redirect: {destination: "/waiting", permanent: false}};
     }
 
-    const gameSession = await findOrCreateGameSession(user.login, req.connection.remoteAddress);
+    const ip = req.headers['x-forwarded-for'] ||
+      req.connection.remoteAddress ||
+      req.socket.remoteAddress ||
+      (req.connection.socket ? req.connection.socket.remoteAddress : null);
+
+    const gameSession = await findOrCreateGameSession(user.login, ip);
 
     const {STARTED, ANSWERED} = serverRuntimeConfig.GAME_STATUS;
     if ((gameSession.status !== STARTED) && (gameSession.status !== ANSWERED)) {

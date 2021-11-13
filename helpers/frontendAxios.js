@@ -14,14 +14,11 @@ function onSuccess(res) {
   return res;
 }
 
-function onFail(res, error) {
+function onFail(res) {
   switch (res.status) {
     case 401:
       document.location = "/";
       break;
-    case 403:
-      console.log("I am here :/")
-      return axios.request(error.config);
   }
   return res;
 }

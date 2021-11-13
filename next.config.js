@@ -13,9 +13,9 @@ const GAME_STATUS = {
 
 // Moscow Timezone
 const GAME_START_TIME = {
-  hour: parseInt(process.env.GAME_START_HOUR) || 10,
+  hour: parseInt(process.env.GAME_START_HOUR) || 0,
   minute: parseInt(process.env.GAME_START_MINUTE) || 0,
-  weekday: parseInt(process.env.GAME_START_WEEKDAY) || 2,
+  weekday: parseInt(process.env.GAME_START_WEEKDAY) || 1,
 };
 
 const QUESTIONS_QUANTITY = 10; // You can do it lower but not higher (yet)

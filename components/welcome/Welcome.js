@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import Lifelines from "./Lifelines";
+import About from "./About";
 import Rules from "./Rules";
 
 export default function Welcome(props) {
@@ -21,7 +21,7 @@ export default function Welcome(props) {
         ref={modalWindowRef}
       >
         <div className="modal-window-welcome__col">
-          <Lifelines />
+          <About />
         </div>
         <div className="modal-window-welcome__col">
           <Rules />

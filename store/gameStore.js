@@ -1,20 +1,20 @@
-import { makeAutoObservable } from "mobx";
-import { DateTime, Interval } from "luxon";
+import {makeAutoObservable} from "mobx";
+import {DateTime, Interval} from "luxon";
 import getConfig from "next/config";
 import axios from "../helpers/frontendAxios";
 import getDifferenceBetweenDates from "../helpers/getDifferenceBetweenDates";
 
-const { publicRuntimeConfig } = getConfig();
+const {publicRuntimeConfig} = getConfig();
 
 
 class Game {
   progress = 0;
 
-  question = { name: "", answers: [] };
+  question = {name: "", answers: []};
 
   isButtonsEnabled = true;
 
-  endTime = DateTime.utc().plus({ seconds: publicRuntimeConfig.TIME_TO_ANSWER });
+  endTime = DateTime.utc().plus({seconds: publicRuntimeConfig.TIME_TO_ANSWER});
 
   serverTime = DateTime.utc();
 
@@ -50,12 +50,8 @@ class Game {
     clearInterval(this.timerId);
   }
 
-  clearTimer() {
-    this.timeout = 0;
-  }
-
   updateTimer() {
-    const timeNow = DateTime.utc().plus({ milliseconds: this.difference });
+    const timeNow = DateTime.utc().plus({milliseconds: this.difference});
     this.timeout = Math.trunc(Interval.fromDateTimes(timeNow, this.endTime).length("seconds")) || 0;
 
     if (this.timeout === 0) {
@@ -81,7 +77,7 @@ class Game {
         this.setAnswerState(correct, "correct");
       });
 
-      setTimeout(()=> {
+      setTimeout(() => {
         axios.get("/api/questions").then(questionResponse => {
           if (questionResponse.data) {
             this.updateQuestion(questionResponse.data);

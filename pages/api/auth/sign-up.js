@@ -47,6 +47,7 @@ export default nc()
       req.session.set("user", { login });
       await req.session.save();
     } catch (e) {
+      console.log(e);
       res
         .status(400)
         .json({ message: "User with that username already exist" });
